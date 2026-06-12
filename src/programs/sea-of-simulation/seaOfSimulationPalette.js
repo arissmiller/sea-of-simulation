@@ -19,6 +19,24 @@ const palettes = {
     high: new THREE.Color('#9af7ff'),
     accent: new THREE.Color('#7b7dff')
   },
+  glacier: {
+    low: new THREE.Color('#031019'),
+    mid: new THREE.Color('#4cc9f0'),
+    high: new THREE.Color('#e0fbff'),
+    accent: new THREE.Color('#8be9ff')
+  },
+  biohazard: {
+    low: new THREE.Color('#091106'),
+    mid: new THREE.Color('#7ed957'),
+    high: new THREE.Color('#f2ff66'),
+    accent: new THREE.Color('#c8ff2f')
+  },
+  infrared: {
+    low: new THREE.Color('#160308'),
+    mid: new THREE.Color('#ff5a36'),
+    high: new THREE.Color('#fff07a'),
+    accent: new THREE.Color('#ff2a6d')
+  },
   magma: {
     low: new THREE.Color('#120607'),
     mid: new THREE.Color('#d9481e'),
@@ -54,6 +72,17 @@ function sampleShiftFunction(settings, normalized, time, height) {
       return clamp01(0.5 + Math.sin(normalized * 16 * frequency + height * 0.9 + time * speed) * 0.5);
     case 'drift':
       return clamp01(0.5 + Math.sin(normalized * 5 * frequency - time * speed * 0.9) * 0.5);
+    case 'strobe': {
+      const pulse = Math.sin(time * speed * 3.6 + normalized * frequency * 2.4);
+      return pulse > 0.2 ? 1 : 0.12;
+    }
+    case 'prism':
+      return clamp01(
+        normalized * 0.55 +
+          0.22 +
+          Math.sin(normalized * 21 * frequency - time * speed * 1.4) * 0.16 +
+          Math.cos(height * 2.4 + time * speed * 0.45) * 0.11
+      );
     case 'pulse':
     default:
       return clamp01(0.5 + Math.sin(time * speed * 0.8 + normalized * 7.5 * frequency) * 0.5);

@@ -31,19 +31,25 @@ export class ControlPanel {
     this.root.innerHTML = `
       <div class="hud__header">
         <div>
-          <p class="hud__eyebrow">Three.js Terrain Engine</p>
           <h1 class="hud__title">${title}</h1>
           <p class="hud__subtitle">${subtitle}</p>
         </div>
-        <button class="hud__toggle" type="button">Show</button>
+        <div class="hud__header-actions">
+          <button class="hud__button hud__button--header" type="button" data-action="random-preset">Randomize</button>
+          <button class="hud__button hud__button--header hud__toggle" type="button">Show Controls</button>
+        </div>
       </div>
       <div class="hud__body"></div>`;
 
     this.body = this.root.querySelector('.hud__body');
     this.toggle = this.root.querySelector('.hud__toggle');
+    this.randomPresetButton = this.root.querySelector('[data-action="random-preset"]');
+    this.randomPresetButton.addEventListener('click', () => window.location.reload());
     this.toggle.addEventListener('click', () => {
       this.root.classList.toggle('hud--collapsed');
-      this.toggle.textContent = this.root.classList.contains('hud--collapsed') ? 'Show' : 'Hide';
+      this.toggle.textContent = this.root.classList.contains('hud--collapsed')
+        ? 'Show Controls'
+        : 'Hide Controls';
     });
 
     this.renderSchema();
@@ -82,7 +88,7 @@ export class ControlPanel {
     header.setAttribute('aria-expanded', initiallyCollapsed ? 'false' : 'true');
     header.innerHTML = `
       <span class="hud__group-title">${title}</span>
-      <span class="hud__group-icon" aria-hidden="true">+</span>
+      <span class="hud__group-icon" aria-hidden="true">▾</span>
     `;
 
     const content = document.createElement('div');
