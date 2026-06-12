@@ -8,7 +8,7 @@ export class Renderer {
       antialias: true,
       powerPreference: 'high-performance'
     });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(this.getPixelRatio());
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
@@ -19,7 +19,21 @@ export class Renderer {
     const width = window.innerWidth;
     const height = window.innerHeight;
     this.renderer.setSize(width, height, false);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(this.getPixelRatio());
+  }
+
+  getPixelRatio() {
+    const pixelCount = window.innerWidth * window.innerHeight;
+
+    if (pixelCount >= 4_000_000) {
+      return Math.min(window.devicePixelRatio, 1.25);
+    }
+
+    if (pixelCount >= 2_500_000) {
+      return Math.min(window.devicePixelRatio, 1.5);
+    }
+
+    return Math.min(window.devicePixelRatio, 2);
   }
 
   render(scene, camera) {

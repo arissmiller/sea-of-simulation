@@ -37,6 +37,7 @@ export class TerrainSurface {
 
     this.contours = new TerrainContours(settings);
     this.baseXY = new Float32Array(0);
+    this.lastSurfaceUpdateTime = -Infinity;
     this.captureBaseXY();
   }
 
@@ -76,6 +77,13 @@ export class TerrainSurface {
 
   update(time, options = {}) {
     const { forceContours = false } = options;
+    const targetInterval = this.getUpdateInterval();
+
+    if (!forceContours && this.lastSurfaceUpdateTime !== -Infinity && time - this.lastSurfaceUpdateTime < targetInterval) {
+      return;
+    }
+
+    this.lastSurfaceUpdateTime = time;
     const position = this.geometry.attributes.position;
     const color = this.geometry.attributes.color;
     const positionArray = position.array;
@@ -97,6 +105,26 @@ export class TerrainSurface {
     if (this.mode === 'topo' && this.contours.shouldUpdate(time, forceContours)) {
       this.contours.updateFromSurface(this, time, this.colorizer);
     }
+  }
+
+  getUpdateInterval() {
+    const { resolution } = this.settings;
+
+    if (this.mode === 'mesh' || this.mode === 'topo') {
+      if (resolution >= 192) {
+        return 1 / 24;
+      }
+
+      if (resolution >= 160) {
+        return 1 / 30;
+      }
+
+      if (resolution >= 128) {
+        return 1 / 36;
+      }
+    }
+
+    return 0;
   }
 
   setRenderMode(mode) {
