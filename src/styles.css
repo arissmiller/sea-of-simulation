@@ -1,0 +1,243 @@
+:root {
+  color-scheme: dark;
+  --bg-0: #02030a;
+  --bg-1: #07111f;
+  --panel: rgba(5, 12, 24, 0.74);
+  --panel-border: rgba(120, 223, 255, 0.16);
+  --text: #d9f7ff;
+  --muted: rgba(194, 231, 255, 0.72);
+  --accent: #79f0ff;
+  --accent-strong: #18d9ff;
+  --shadow: rgba(0, 0, 0, 0.42);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(17, 82, 122, 0.24), transparent 32%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 60%, #000 100%);
+  color: var(--text);
+}
+
+canvas {
+  display: block;
+}
+
+.hud {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  width: min(22rem, calc(100vw - 2rem));
+  padding: 1rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 1.25rem;
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 1.25rem 3.5rem var(--shadow),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.hud__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.hud__body {
+  max-height: min(68vh, 42rem);
+  overflow-y: auto;
+  padding-right: 0.15rem;
+}
+
+.hud__body::-webkit-scrollbar {
+  width: 0.45rem;
+}
+
+.hud__body::-webkit-scrollbar-thumb {
+  background: rgba(121, 240, 255, 0.22);
+  border-radius: 999px;
+}
+
+.hud__eyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hud__title {
+  margin: 0;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.hud__subtitle {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.hud__toggle {
+  border: 1px solid rgba(121, 240, 255, 0.26);
+  background: rgba(9, 23, 43, 0.8);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+}
+
+.hud--collapsed .hud__body {
+  display: none;
+}
+
+.hud__group {
+  margin-bottom: 1rem;
+}
+
+.hud__group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.hud__group-title {
+  margin: 0 0 0.6rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hud__group-icon {
+  color: var(--accent);
+  font-size: 1rem;
+  line-height: 1;
+  transform: rotate(45deg);
+  transition: transform 160ms ease;
+}
+
+.hud__group-content {
+  padding-top: 0.1rem;
+}
+
+.hud__group--collapsed .hud__group-content {
+  display: none;
+}
+
+.hud__group--collapsed .hud__group-icon {
+  transform: rotate(0deg);
+}
+
+.hud__field {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.hud__field label {
+  font-size: 0.9rem;
+}
+
+.hud__value {
+  color: var(--accent);
+  font-size: 0.78rem;
+  min-width: 3rem;
+  text-align: right;
+}
+
+.hud__range,
+.hud__select {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.hud__range {
+  accent-color: var(--accent-strong);
+}
+
+.hud__select {
+  border: 1px solid rgba(121, 240, 255, 0.18);
+  background: rgba(7, 16, 31, 0.95);
+  color: var(--text);
+  border-radius: 0.75rem;
+  padding: 0.7rem 0.8rem;
+}
+
+.hud__actions,
+.hud__segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.hud__button {
+  border: 1px solid rgba(121, 240, 255, 0.2);
+  background: rgba(7, 17, 34, 0.92);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.7rem 0.95rem;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.hud__button:hover,
+.hud__button:focus-visible {
+  border-color: rgba(121, 240, 255, 0.56);
+  background: rgba(11, 28, 50, 1);
+  transform: translateY(-1px);
+}
+
+.hud__button.is-active {
+  border-color: rgba(121, 240, 255, 0.68);
+  background:
+    linear-gradient(180deg, rgba(19, 71, 99, 0.94), rgba(7, 34, 58, 0.98));
+  box-shadow: 0 0 1.25rem rgba(30, 202, 255, 0.14);
+}
+
+.hud__footer {
+  margin-top: 0.5rem;
+  color: rgba(194, 231, 255, 0.62);
+  font-size: 0.76rem;
+}
+
+@media (max-width: 720px) {
+  .hud {
+    top: auto;
+    bottom: 1rem;
+    padding: 0.9rem;
+  }
+
+  .hud__title {
+    font-size: 1.35rem;
+  }
+}
