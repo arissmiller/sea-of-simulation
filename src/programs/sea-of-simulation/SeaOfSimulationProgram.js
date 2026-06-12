@@ -77,9 +77,7 @@ export class SeaOfSimulationProgram {
 
   init({ scene }) {
     this.scene = scene;
-    this.scene.fog.color = new THREE.Color('#02030a');
-    this.scene.fog.near = 18;
-    this.scene.fog.far = 56;
+    this.scene.fog = null;
 
     this.grid = new THREE.GridHelper(42, 24, '#0d5e7b', '#06283a');
     this.grid.position.y = -1.24;

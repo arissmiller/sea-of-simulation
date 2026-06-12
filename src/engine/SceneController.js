@@ -6,7 +6,7 @@ export class SceneController {
     this.renderer = renderer;
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color('#02030a');
-    this.scene.fog = new THREE.Fog('#02030a', 18, 56);
+    this.scene.fog = null;
 
     this.cameraRig = new CameraRig();
     this.program = null;
